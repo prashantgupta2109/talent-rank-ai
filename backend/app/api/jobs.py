@@ -83,6 +83,17 @@ def list_jobs(db: Session = Depends(get_db)) -> List[Dict[str, Any]]:
     ]
 
 
+@router.post("/parse", response_model=ParsedJobDescription)
+def parse_job_preview(payload: JobCreateRequest) -> ParsedJobDescription:
+    """Parse a job description for preview without saving it."""
+    if not payload.raw_text.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Job description text cannot be empty.",
+        )
+    return parse_job_description(payload.raw_text)
+
+
 @router.get("/{job_id}", response_model=Dict[str, Any])
 def get_job(job_id: int, db: Session = Depends(get_db)) -> Dict[str, Any]:
     """Retrieve a single saved job description by ID."""

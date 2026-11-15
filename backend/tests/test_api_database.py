@@ -115,6 +115,18 @@ def test_full_job_candidate_match_lifecycle():
     assert len(cand_detail["match_analysis"]["reasons"]) >= 3
 
 
+def test_parse_job_preview():
+    """Preview parsing returns extracted criteria without requiring a saved job."""
+    response = client.post("/api/v1/jobs/parse", json={"raw_text": SAMPLE_JD})
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["title"] == "Python / Machine Learning Engineer"
+    assert "Python" in data["required_skills"]
+    assert "AWS" in data["preferred_skills"]
+    assert data["raw_text"] == SAMPLE_JD
+
+
 def test_file_validation_rejections():
     """Verify that unsupported file types are rejected gracefully with informative reports."""
     # Create Job
