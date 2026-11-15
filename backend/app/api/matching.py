@@ -1,13 +1,15 @@
 """Candidate matching and ranking API endpoints."""
 
 from typing import Dict, Any, List, Optional
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+from app.database import get_db
+from app.models.entities import Batch, Candidate, JobDescription
 from app.schemas.match import MatchResult, MatchRankingItem, BatchMatchResponse
 from app.schemas.job import ParsedJobDescription
 from app.schemas.resume import ParsedResume
-from app.api.jobs import _JOBS_STORE
-from app.api.resumes import _RESUMES_STORE
 from app.services.scorer import calculate_match
 
 router = APIRouter()
@@ -15,6 +17,33 @@ router = APIRouter()
 # In-memory cache for computed match results
 # key: f"{job_id}_{candidate_id}" -> MatchResult dict
 _MATCH_RESULTS_CACHE: Dict[str, Dict[str, Any]] = {}
+
+
+def _to_parsed_job(job: JobDescription) -> ParsedJobDescription:
+    return ParsedJobDescription(
+        title=job.title,
+        required_skills=job.required_skills,
+        preferred_skills=job.preferred_skills,
+        min_years_experience=job.min_years_experience,
+        education_requirements=job.education_requirements,
+        responsibilities=job.responsibilities,
+        raw_text=job.raw_text,
+    )
+
+
+def _to_parsed_resume(candidate: Candidate) -> ParsedResume:
+    return ParsedResume(
+        candidate_name=candidate.name,
+        email=candidate.email,
+        phone=candidate.phone,
+        skills=candidate.skills,
+        total_years_experience=candidate.total_years_experience,
+        work_experience=candidate.work_experience,
+        education=candidate.education,
+        raw_text=candidate.raw_text,
+        warnings=candidate.warnings,
+        filename=candidate.filename,
+    )
 
 
 class MatchRequest(BaseModel):
@@ -35,24 +64,26 @@ class DirectMatchRequest(BaseModel):
 
 
 @router.post("/compare", response_model=BatchMatchResponse, status_code=status.HTTP_200_OK)
-def compare_job_and_resumes(payload: MatchRequest) -> BatchMatchResponse:
+def compare_job_and_resumes(
+    payload: MatchRequest,
+    db: Session = Depends(get_db),
+) -> BatchMatchResponse:
     """Compare a job description against uploaded resumes, rank them, and return full leaderboard."""
-    job_data = _JOBS_STORE.get(payload.job_id)
-    if not job_data:
+    job = db.get(JobDescription, payload.job_id)
+    if not job:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Job description with ID {payload.job_id} not found.",
         )
 
-    parsed_jd = ParsedJobDescription(**job_data)
+    parsed_jd = _to_parsed_job(job)
 
-    target_resumes = []
-    if payload.resume_ids:
-        for r_id in payload.resume_ids:
-            if r_id in _RESUMES_STORE:
-                target_resumes.append(_RESUMES_STORE[r_id])
-    else:
-        target_resumes = list(_RESUMES_STORE.values())
+    stmt = select(Candidate).join(Batch, Candidate.batch_id == Batch.id).where(
+        Batch.job_id == payload.job_id
+    )
+    if payload.resume_ids is not None:
+        stmt = stmt.where(Candidate.id.in_(payload.resume_ids))
+    target_resumes = db.scalars(stmt).all()
 
     if not target_resumes:
         raise HTTPException(
@@ -63,9 +94,9 @@ def compare_job_and_resumes(payload: MatchRequest) -> BatchMatchResponse:
     rankings: List[MatchRankingItem] = []
     detailed_results: List[MatchResult] = []
 
-    for res_data in target_resumes:
-        candidate_id = res_data.get("id")
-        parsed_resume = ParsedResume(**res_data)
+    for candidate in target_resumes:
+        candidate_id = candidate.id
+        parsed_resume = _to_parsed_resume(candidate)
 
         match_res = calculate_match(
             jd=parsed_jd,
@@ -91,7 +122,7 @@ def compare_job_and_resumes(payload: MatchRequest) -> BatchMatchResponse:
                     s.resume_skill for s in match_res.semantically_matched_skills
                 ],
                 missing_skills=match_res.missing_skills,
-                filename=res_data.get("filename"),
+                filename=candidate.filename,
             )
         )
 
@@ -109,26 +140,40 @@ def compare_job_and_resumes(payload: MatchRequest) -> BatchMatchResponse:
 
 
 @router.get("/{job_id}/candidate/{candidate_id}", response_model=MatchResult)
-def get_candidate_analysis(job_id: int, candidate_id: int) -> MatchResult:
+def get_candidate_analysis(
+    job_id: int,
+    candidate_id: int,
+    db: Session = Depends(get_db),
+) -> MatchResult:
     """Retrieve detailed candidate-level match analysis, scores, and natural language explanations."""
+    job = db.get(JobDescription, job_id)
+    if not job:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Job description with ID {job_id} not found.",
+        )
+
+    stmt = (
+        select(Candidate)
+        .join(Batch, Candidate.batch_id == Batch.id)
+        .where(Batch.job_id == job_id, Candidate.id == candidate_id)
+    )
+    candidate = db.scalars(stmt).first()
+    if not candidate:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Match record for Job {job_id} and Candidate {candidate_id} not found.",
+        )
+
     cache_key = f"{job_id}_{candidate_id}"
     cached = _MATCH_RESULTS_CACHE.get(cache_key)
 
     if cached:
         return MatchResult(**cached)
 
-    job_data = _JOBS_STORE.get(job_id)
-    res_data = _RESUMES_STORE.get(candidate_id)
-
-    if not job_data or not res_data:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Match record for Job {job_id} and Candidate {candidate_id} not found.",
-        )
-
     match_res = calculate_match(
-        jd=ParsedJobDescription(**job_data),
-        resume=ParsedResume(**res_data),
+        jd=_to_parsed_job(job),
+        resume=_to_parsed_resume(candidate),
         candidate_id=candidate_id,
         job_id=job_id,
     )
