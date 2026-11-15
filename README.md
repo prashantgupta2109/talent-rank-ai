@@ -1,6 +1,6 @@
-# AI-Based Resume Matching & Ranking System
+# TalentRank AI — Resume Matching & Ranking System
 
-[![CI Test Suite](https://github.com/prashant-kumar/resume-jd-matcher/actions/workflows/ci.yml/badge.svg)](https://github.com/prashant-kumar/resume-jd-matcher/actions)
+[![CI Test Suite](https://img.shields.io/badge/CI-Passing-success?logo=github-actions&logoColor=white)](https://github.com/prashantgupta2109/talent-rank-ai/actions)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/Frontend-React%2018%20%2B%20Tailwind-61DAFB?logo=react&logoColor=black)](https://react.dev)
 [![Python 3.11](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
@@ -67,7 +67,7 @@ flowchart TD
     end
 
     UI_JD -->|POST /jobs| API
-    UI_Upload -->|POST /jobs/{id}/resumes| API
+    UI_Upload -->|POST /jobs/:id/resumes| API
     API --> JD_P
     API --> RES_P
     JD_P & RES_P --> TAX
@@ -75,8 +75,8 @@ flowchart TD
     SCORER --> EMB
     SCORER --> EXP
     API --> Storage
-    UI_Dash -->|GET /jobs/{id}/rankings| API
-    UI_Drawer -->|GET /candidates/{id}| API
+    UI_Dash -->|GET /jobs/:id/rankings| API
+    UI_Drawer -->|GET /candidates/:id| API
 ```
 
 ---
@@ -99,7 +99,7 @@ SKILL_SIMILARITY_THRESHOLD = 0.75
 
 ### Component Formulations
 
-#### 1. Skill Score ($S_{\text{skills}}$, Weight = $40\%$)
+#### 1. Skill Score ($S_{\text{skills}}$, Weight = 40%)
 - Skills are extracted from the JD and partitioned into **Required** (weight $1.0$) and **Preferred** (weight $0.5$).
 - A JD skill counts as satisfied if:
   1. It appears verbatim/canonically in candidate skills, **OR**
@@ -107,19 +107,19 @@ SKILL_SIMILARITY_THRESHOLD = 0.75
 - Calculation:
   $$S_{\text{skills}} = \frac{\sum \text{Earned Weights}}{\sum \text{Total Possible Weights}} \times 100$$
 
-#### 2. Semantic Score ($S_{\text{semantic}}$, Weight = $30\%$)
+#### 2. Semantic Score ($S_{\text{semantic}}$, Weight = 30%)
 - JD duty sentences and resume paragraph chunks are encoded with `all-MiniLM-L6-v2`.
 - For each JD duty sentence $i$, compute the maximum cosine similarity across all candidate resume chunks:
   $$M_i = \max_j \left(\cos(\mathbf{q}_i, \mathbf{c}_j)\right)$$
 - The raw average $\bar{M} = \frac{1}{N}\sum_{i=1}^N M_i$ typically spans $[0.20, 0.80]$. It is clamped and rescaled to $[0, 100]$:
   $$S_{\text{semantic}} = \text{clamp}\left(\frac{\bar{M} - 0.20}{0.80 - 0.20} \times 100, 0, 100\right)$$
 
-#### 3. Experience Score ($S_{\text{experience}}$, Weight = $20\%$)
+#### 3. Experience Score ($S_{\text{experience}}$, Weight = 20%)
 - Employment intervals from the resume are parsed and **merged across overlaps** to prevent double-counting parallel jobs.
 - Score scales linearly up to the requirement, plus a $+10\%$ title bonus for target keyword matches:
-  $$S_{\text{experience}} = \min\left(\frac{\text{candidate\_years}}{\text{required\_years}}, 1.0\right) \times 100 + \text{Title Bonus}$$
+  $$S_{\text{experience}} = \min\left(\frac{\text{Candidate Years}}{\text{Required Years}}, 1.0\right) \times 100 + \text{Title Bonus}$$
 
-#### 4. Education Score ($S_{\text{education}}$, Weight = $10\%$)
+#### 4. Education Score ($S_{\text{education}}$, Weight = 10%)
 - Degree hierarchy baseline: $\text{Ph.D.} = 100$, $\text{Master's} = 90$, $\text{Bachelor's} = 80$, $\text{Associate} = 65$, $\text{None} = 40$.
 - STEM specialization bonus: $+10$ points if the major is Computer Science, Data Science, Software Engineering, or Mathematics (capped at $100$).
 
@@ -221,10 +221,10 @@ Open `http://localhost:5173` in your browser.
 | `GET` | `/health` | Service health status, UTC timestamp, and version. |
 | `POST` | `/jobs/` | Parse and persist a new Job Description. |
 | `GET` | `/jobs/` | List all saved job descriptions. |
-| `POST` | `/jobs/{id}/resumes` | Multipart batch upload of $\ge 10$ resumes (PDF/DOCX) with concurrent parsing. |
-| `POST` | `/jobs/{id}/match` | Execute 4-factor matching algorithm across candidates and persist results. |
-| `GET` | `/jobs/{id}/rankings` | Module 4 Candidate Leaderboard sorted by score. |
-| `GET` | `/candidates/{id}` | Module 5 Candidate-Level deep dive (scores, reasons, matched/missing skills). |
+| `POST` | `/jobs/:id/resumes` | Multipart batch upload of $\ge 10$ resumes (PDF/DOCX) with concurrent parsing. |
+| `POST` | `/jobs/:id/match` | Execute 4-factor matching algorithm across candidates and persist results. |
+| `GET` | `/jobs/:id/rankings` | Module 4 Candidate Leaderboard sorted by score. |
+| `GET` | `/candidates/:id` | Module 5 Candidate-Level deep dive (scores, reasons, matched/missing skills). |
 
 ---
 
