@@ -214,6 +214,19 @@ Open `http://localhost:5173` in your browser.
 
 ---
 
+### Option C: Deploy the Backend on Render
+
+1. Commit and push the backend fix in `backend/app/services/scorer.py` (it imports `Optional`, used by `calculate_match`). The reported Render deployment used commit `f83261c`, which does not include that fix.
+2. In Render, create a **Web Service** connected to this repository and select **Docker** as the runtime.
+3. Set **Root Directory** to `backend`. Render will use `backend/Dockerfile` and `backend/requirements.txt`.
+4. Set the health check path to `/health`. The Dockerfile listens on Render's `PORT` environment variable.
+5. For persistent production data, create a Render PostgreSQL database and set the web service's `DATABASE_URL` to that database's **Internal Database URL**. Without it, the app uses a local SQLite file, which is not persistent on Render's default filesystem.
+6. If the frontend is hosted separately, set `CORS_ORIGINS` to a JSON array containing its origin, for example `["https://your-frontend.onrender.com"]`.
+
+After saving the settings, deploy the latest commit. Verify the service at `https://<your-service>.onrender.com/health`; API docs are available at `/docs`.
+
+---
+
 ## 7. API Reference Summary
 
 | Method | Endpoint | Description |

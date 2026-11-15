@@ -1,7 +1,7 @@
 """Candidate matching and scoring calculation service implementing the four-factor algorithm."""
 
 import re
-from typing import Dict, List, Tuple, Set, Any
+from typing import Dict, List, Tuple, Set, Any, Optional
 import numpy as np
 from app.config import get_settings
 from app.schemas.job import ParsedJobDescription
