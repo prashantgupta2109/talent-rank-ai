@@ -1,0 +1,27 @@
+Job Title: Senior Python / Machine Learning Engineer
+
+Company: AI Horizon Innovations
+Location: Remote / Hybrid
+
+About Us:
+AI Horizon is pioneering state-of-the-art NLP and GenAI platforms that transform enterprise knowledge workflows.
+
+Responsibilities:
+- Build and scale production-grade machine learning pipelines, NLP systems, and LLM applications.
+- Design high-performance REST APIs and microservices using Python and FastAPI.
+- Implement Retrieval-Augmented Generation (RAG) architectures with vector search and embeddings.
+- Deploy models into containerized Kubernetes and AWS cloud environments with automated CI/CD.
+- Collaborate with frontend engineers to integrate intuitive user interfaces.
+
+Requirements:
+- 4+ years of professional experience in Python and Machine Learning engineering.
+- Strong hands-on expertise with PyTorch or TensorFlow, scikit-learn, and Hugging Face Transformers.
+- Proven experience building backend APIs with FastAPI, Flask, or Django.
+- Solid understanding of SQL, PostgreSQL, and vector databases (such as ChromaDB, Pinecone, or FAISS).
+- Experience with Docker containerization and Git version control.
+- Bachelor's or Master's degree in Computer Science, Data Science, or related STEM discipline.
+
+Nice to Have:
+- Experience with Sentence Transformers, spaCy, and Large Language Models (LLMs).
+- Knowledge of Kubernetes, AWS (EC2, S3, EKS), and CI/CD pipelines (GitHub Actions).
+- Experience with MLOps tools like MLflow or Weights & Biases.

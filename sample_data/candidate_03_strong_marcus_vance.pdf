@@ -1,0 +1,51 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 972 >>
+stream
+BT
+/F1 11 Tf
+50 740 Td
+14 TL
+(Marcus Vance) '
+(marcus.vance@techcorp.io | \(206\) 555-0188 | Seattle, WA) '
+(Professional Summary:) '
+(Senior NLP Systems Engineer with 5 years experience specializing in semantic vector search and scalable ML APIs.) '
+(Technical Skills:) '
+(Python, PyTorch, Sentence Transformers, spaCy, FastAPI, Flask, Docker, AWS, PostgreSQL, SQL, Git) '
+(Work Experience:) '
+(Senior Machine Learning Engineer | DeepSemantic | Feb 2021 - Present) '
+(- Engineered vector embedding search platform using Sentence Transformers and FAISS.) '
+(- Deployed RESTful API endpoints using FastAPI and Docker containers on AWS EC2.) '
+(NLP Engineer | TextLogic Solutions | Jan 2019 - Jan 2021) '
+(- Created automated entity recognition pipelines using spaCy, scikit-learn, and PostgreSQL.) '
+(Education:) '
+(Master of Science in Data Science | University of Washington | 2018) '
+(Bachelor of Science in Computer Science | Western Washington University | 2016) '
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001263 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1333
+%%EOF

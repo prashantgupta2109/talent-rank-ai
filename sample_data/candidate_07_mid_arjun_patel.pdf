@@ -1,0 +1,49 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 762 >>
+stream
+BT
+/F1 11 Tf
+50 740 Td
+14 TL
+(Arjun Patel) '
+(arjun.patel@mlstart.io | \(408\) 555-0176 | Sunnyvale, CA) '
+(Professional Summary:) '
+(Junior Machine Learning Engineer with 2 years of experience building modern PyTorch models and FastAPI services.) '
+(Technical Skills:) '
+(Python, PyTorch, Hugging Face, scikit-learn, FastAPI, Docker, SQL, Git) '
+(Work Experience:) '
+(Junior ML Engineer | NextGen Intelligence | Jul 2022 - Present) '
+(- Fine-tuned sentence transformer models and built semantic search microservices using FastAPI.) '
+(- Containerized ML testing environments with Docker.) '
+(Education:) '
+(Master of Science in Computer Science | San Jose State University | 2022) '
+(Bachelor of Science in Computer Engineering | Mumbai University | 2020) '
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001053 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1123
+%%EOF

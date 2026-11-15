@@ -1,0 +1,52 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 1069 >>
+stream
+BT
+/F1 11 Tf
+50 740 Td
+14 TL
+(Alex Mercer) '
+(alex.mercer@gmail.com | \(415\) 555-0192 | San Francisco, CA) '
+(Professional Summary:) '
+(Staff Machine Learning Engineer with 6 years of expertise architecting high-throughput NLP systems and LLM pipelines.) '
+(Technical Skills:) '
+(Python, PyTorch, Hugging Face, Transformers, FastAPI, Docker, Kubernetes, AWS, PostgreSQL, scikit-learn, Git) '
+(Work Experience:) '
+(Lead Machine Learning Engineer | NeuralScale AI | Jan 2021 - Present) '
+(- Designed and deployed enterprise RAG pipeline serving 2M daily queries using FastAPI and ChromaDB vector search.) '
+(- Fine-tuned open-source LLMs using PyTorch and Hugging Face on AWS EC2 clusters.) '
+(Senior ML Engineer | Apex Data Labs | Mar 2018 - Dec 2020) '
+(- Built real-time text classification services with scikit-learn, spaCy, and PostgreSQL.) '
+(- Containerized services with Docker and orchestrated deployment via Kubernetes.) '
+(Education:) '
+(Ph.D. in Computer Science | Stanford University | 2018) '
+(Bachelor of Science in Mathematics | UC Berkeley | 2014) '
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001361 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1431
+%%EOF

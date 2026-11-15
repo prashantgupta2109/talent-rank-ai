@@ -1,0 +1,50 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 840 >>
+stream
+BT
+/F1 11 Tf
+50 740 Td
+14 TL
+(Lucas Silva) '
+(lucas.silva@frontcraft.com | \(212\) 555-0138 | New York, NY) '
+(Professional Summary:) '
+(Senior Frontend Developer with 5 years experience creating responsive, high-performance web applications.) '
+(Technical Skills:) '
+(React, JavaScript, TypeScript, Next.js, HTML, CSS, Tailwind CSS, Redux, Jest, Figma) '
+(Work Experience:) '
+(Senior Frontend Engineer | PixelCraft Studio | Jan 2021 - Present) '
+(- Led development of responsive SaaS user interfaces using React, Next.js, and Tailwind CSS.) '
+(- Improved Core Web Vitals and client-side rendering performance by 40%.) '
+(Frontend Developer | Metro Web Agency | Jan 2019 - Dec 2020) '
+(- Built web dashboards using React, Redux, and CSS3.) '
+(Education:) '
+(Bachelor of Arts in Graphic Design & Web Media | New York University | 2018) '
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001131 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1201
+%%EOF
