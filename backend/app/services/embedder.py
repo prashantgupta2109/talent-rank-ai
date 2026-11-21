@@ -2,6 +2,7 @@
 
 import hashlib
 import logging
+import os
 from typing import List, Optional
 import numpy as np
 
@@ -13,10 +14,22 @@ _MODEL_NAME = "all-MiniLM-L6-v2"
 _EMBEDDING_DIM = 384
 
 
+def _sentence_transformers_enabled() -> bool:
+    """Disable the heavyweight model by default on Render's constrained instances."""
+    setting = os.getenv("USE_SENTENCE_TRANSFORMERS")
+    if setting is not None:
+        return setting.strip().lower() in {"1", "true", "yes", "on"}
+    return os.getenv("RENDER", "").strip().lower() != "true"
+
+
 def _get_model():
     """Retrieve or initialize the SentenceTransformer singleton instance."""
     global _EMBEDDING_MODEL
     if _EMBEDDING_MODEL is None:
+        if not _sentence_transformers_enabled():
+            logger.info("SentenceTransformer disabled; using deterministic semantic fallback")
+            _EMBEDDING_MODEL = "FALLBACK"
+            return _EMBEDDING_MODEL
         try:
             from sentence_transformers import SentenceTransformer
             _EMBEDDING_MODEL = SentenceTransformer(_MODEL_NAME)
